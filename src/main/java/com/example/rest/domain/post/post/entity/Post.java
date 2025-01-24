@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class Post extends BaseTime {
+
     private String title;
     private String content;
+
 }

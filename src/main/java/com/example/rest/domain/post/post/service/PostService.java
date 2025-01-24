@@ -11,11 +11,13 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
     private final PostRepository postRepository;
 
     public void write(String title, String content) {
+
         postRepository.save(
-                Post
+                    Post
                         .builder()
                         .title(title)
                         .content(content)
