@@ -1,6 +1,8 @@
 package com.example.rest.domain.post.post.dto;
 
 import com.example.rest.domain.post.post.entity.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -9,7 +11,9 @@ import java.time.LocalDateTime;
 public class PostDto {
 
     private long id;
+    @JsonProperty("createdDatetime")
     private LocalDateTime createdDate;
+    @JsonProperty("modifiedDatetime")
     private LocalDateTime modifiedDate;
     private String title;
     private String content;
@@ -21,5 +25,4 @@ public class PostDto {
         this.title = post.getTitle();
         this.content = post.getContent();
     }
-
 }
