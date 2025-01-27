@@ -1,5 +1,6 @@
 package com.example.rest.domain.post.post.controller;
 
+import com.example.rest.domain.post.post.dto.PostDto;
 import com.example.rest.domain.post.post.entity.Post;
 import com.example.rest.domain.post.post.service.PostService;
 import com.example.rest.global.dto.RsData;
@@ -25,8 +26,12 @@ public class ApiV1PostController {
 
 
     @GetMapping("{id}")
-    public Post getItem(@PathVariable long id) {
-        return postService.getItem(id).get();
+    public PostDto getItem(@PathVariable long id) {
+
+        Post post = postService.getItem(id).get();
+        PostDto postDto = new PostDto(post);
+
+        return postDto;
     }
 
 
@@ -41,6 +46,7 @@ public class ApiV1PostController {
         );
     }
 
+
     record ModifyReqBody(@NotBlank @Length(min=3) String title, @NotBlank @Length(min=3) String content) {}
 
     @PutMapping("{id}")
@@ -54,6 +60,7 @@ public class ApiV1PostController {
                 "%d번 글 수정이 완료되었습니다.".formatted(id)
         );
     }
+
 
     record WriteReqBody(@NotBlank @Length(min=3) String title, @NotBlank @Length(min=3) String content) {}
 
