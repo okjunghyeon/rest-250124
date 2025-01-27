@@ -3,9 +3,10 @@ package com.example.rest.domain.post.post.controller;
 import com.example.rest.domain.post.post.entity.Post;
 import com.example.rest.domain.post.post.service.PostService;
 import com.example.rest.global.dto.RsData;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,19 +41,13 @@ public class ApiV1PostController {
         );
     }
 
-
-    @AllArgsConstructor
-    @Getter
-    public static class ModifyReqBody {
-        private String title;
-        private String content;
-    }
+    record ModifyReqBody(@NotBlank @Length(min=3) String title, @NotBlank @Length(min=3) String content) {}
 
     @PutMapping("{id}")
-    public RsData modify(@PathVariable long id, @RequestBody ModifyReqBody body) {
+    public RsData modify(@PathVariable long id, @RequestBody @Valid ModifyReqBody body) {
 
         Post post = postService.getItem(id).get();
-        postService.modify(post, body.getTitle(), body.getContent());
+        postService.modify(post, body.title(), body.content());
 
         return new RsData(
                 "200-1",
@@ -60,17 +55,11 @@ public class ApiV1PostController {
         );
     }
 
-//    @AllArgsConstructor
-//    @Getter
-//    public static class WriteReqBody {
-//        private String title;
-//        private String content;
-//    }
+    record WriteReqBody(@NotBlank @Length(min=3) String title, @NotBlank @Length(min=3) String content) {}
 
-    record WriteReqBody(String title, String content) { }
     @PostMapping
-    public RsData write(@RequestBody WriteReqBody body) {
-        postService.write(body.title(), body.content);
+    public RsData write(@RequestBody @Valid WriteReqBody body) {
+        postService.write(body.title(), body.content());
 
         return new RsData(
                 "200-1",
