@@ -20,8 +20,13 @@ public class ApiV1PostController {
     private final PostService postService;
 
     @GetMapping
-    public List<Post> getItems() {
-        return postService.getItems();
+    public List<PostDto> getItems() {
+
+        List<Post> posts = postService.getItems();
+
+        return posts.stream()
+                .map(PostDto::new)
+                .toList();
     }
 
 
@@ -47,7 +52,8 @@ public class ApiV1PostController {
     }
 
 
-    record ModifyReqBody(@NotBlank @Length(min=3) String title, @NotBlank @Length(min=3) String content) {}
+    record ModifyReqBody(@NotBlank @Length(min = 3) String title, @NotBlank @Length(min = 3) String content) {
+    }
 
     @PutMapping("{id}")
     public RsData modify(@PathVariable long id, @RequestBody @Valid ModifyReqBody body) {
@@ -62,7 +68,8 @@ public class ApiV1PostController {
     }
 
 
-    record WriteReqBody(@NotBlank @Length(min=3) String title, @NotBlank @Length(min=3) String content) {}
+    record WriteReqBody(@NotBlank @Length(min = 3) String title, @NotBlank @Length(min = 3) String content) {
+    }
 
     @PostMapping
     public RsData write(@RequestBody @Valid WriteReqBody body) {

@@ -9,15 +9,15 @@ import java.time.LocalDateTime;
 public class PostDto {
 
     private long id;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
     private String title;
     private String content;
 
     public PostDto(Post post) {
         this.id = post.getId();
-        this.createdAt = post.getCreatedDate();
-        this.modifiedAt = post.getModifiedDate();
+        this.createdDate = post.getCreatedDate();
+        this.modifiedDate = post.getModifiedDate();
         this.title = post.getTitle();
         this.content = post.getContent();
     }
