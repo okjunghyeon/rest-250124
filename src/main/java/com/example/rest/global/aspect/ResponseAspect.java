@@ -35,17 +35,14 @@ public class ResponseAspect {
             ||
             @annotation(org.springframework.web.bind.annotation.ResponseBody)
             """)
-    public Object test(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object responseAspect(ProceedingJoinPoint joinPoint) throws Throwable {
         System.out.println("pre"); // 전처리
 
         Object rst = joinPoint.proceed(); // 실제 수행 메서드
 
         if(rst instanceof RsData rsData) {
-            String msg = rsData.getMsg();
-
-            //응답 코드를 설정
-            // 응답 헤더의 값을 수정하거나 꺼내올 수 있는 즉, 모아져있는 객체
-            response.setStatus(201);
+            int statusCode = rsData.getStatusCode();
+            response.setStatus(statusCode);
 
         }
 

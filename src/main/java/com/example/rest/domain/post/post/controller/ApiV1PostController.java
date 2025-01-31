@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -42,8 +39,16 @@ public class ApiV1PostController {
 
     @GetMapping("{id}")
     public RsData<PostDto> getItem(@PathVariable long id) {
+        Post post = null;
 
-        Post post = postService.getItem(id).get();
+        try {
+            post = postService.getItem(id).get();
+        } catch (NoSuchElementException e) {
+            return new RsData<>(
+                    "404-1",
+                    "%d 글이 존재하지 않습니다.".formatted(id)
+            );
+        }
 
         return new RsData<>(
                 "200-1",
@@ -88,21 +93,17 @@ public class ApiV1PostController {
     }
 
     @PostMapping
-    public ResponseEntity<RsData<WriteResBody>> write(@RequestBody @Valid WriteReqBody body) {
+    public RsData<WriteResBody> write(@RequestBody @Valid WriteReqBody body) {
         Post post = postService.write(body.title(), body.content());
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(
-                        new RsData<>(
-                                "200-1",
-                                "글 작성이 완료되었습니다.",
-                                new WriteResBody(
-                                        post.getId(),
-                                        postService.count()
-                                )
-                        )
-                );
+        return new RsData<>(
+                "200-1",
+                "글 작성이 완료되었습니다.",
+                new WriteResBody(
+                        post.getId(),
+                        postService.count()
+                )
+        );
     }
 
     @GetMapping("/test")
