@@ -41,14 +41,8 @@ public class ApiV1PostController {
     public RsData<PostDto> getItem(@PathVariable long id) {
         Post post = null;
 
-        try {
             post = postService.getItem(id).get();
-        } catch (NoSuchElementException e) {
-            return new RsData<>(
-                    "404-1",
-                    "%d 글이 존재하지 않습니다.".formatted(id)
-            );
-        }
+
 
         return new RsData<>(
                 "200-1",
