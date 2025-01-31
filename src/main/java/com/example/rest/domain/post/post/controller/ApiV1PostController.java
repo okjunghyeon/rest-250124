@@ -1,5 +1,7 @@
 package com.example.rest.domain.post.post.controller;
 
+import com.example.rest.domain.member.member.entity.Member;
+import com.example.rest.domain.member.member.service.MemberService;
 import com.example.rest.domain.post.post.dto.PostDto;
 import com.example.rest.domain.post.post.entity.Post;
 import com.example.rest.domain.post.post.service.PostService;
@@ -12,7 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -20,6 +23,7 @@ import java.util.*;
 public class ApiV1PostController {
 
     private final PostService postService;
+    private final MemberService memberService;
 
     @GetMapping
     public RsData<List<PostDto>> getItems() {
@@ -39,10 +43,8 @@ public class ApiV1PostController {
 
     @GetMapping("{id}")
     public RsData<PostDto> getItem(@PathVariable long id) {
-        Post post = null;
 
-            post = postService.getItem(id).get();
-
+        Post post = postService.getItem(id).get();
 
         return new RsData<>(
                 "200-1",
@@ -57,7 +59,7 @@ public class ApiV1PostController {
         postService.delete(post);
 
         return new RsData<>(
-                "200-1",
+                "204-1",
                 "%d번 글 삭제가 완료되었습니다.".formatted(id)
         );
     }
@@ -71,7 +73,6 @@ public class ApiV1PostController {
 
         Post post = postService.getItem(id).get();
         postService.modify(post, body.title(), body.content());
-
         return new RsData<>(
                 "200-1",
                 "%d번 글 수정이 완료되었습니다.".formatted(id),
@@ -83,26 +84,16 @@ public class ApiV1PostController {
     record WriteReqBody(@NotBlank @Length(min = 3) String title, @NotBlank @Length(min = 3) String content) {
     }
 
-    record WriteResBody(long id, long totalCount) {
-    }
-
     @PostMapping
-    public RsData<WriteResBody> write(@RequestBody @Valid WriteReqBody body) {
-        Post post = postService.write(body.title(), body.content());
+    public RsData<PostDto> write(@RequestBody @Valid WriteReqBody body) {
+
+        Member actor = memberService.findByUsername("user3").get();
+        Post post = postService.write(actor, body.title(), body.content());
 
         return new RsData<>(
                 "200-1",
                 "글 작성이 완료되었습니다.",
-                new WriteResBody(
-                        post.getId(),
-                        postService.count()
-                )
+                new PostDto(post)
         );
     }
-
-    @GetMapping("/test")
-    public String test() {
-        return "test";
-    }
-
 }
