@@ -1,6 +1,7 @@
 package com.example.rest.global.aspect;
 
 import com.example.rest.global.dto.RsData;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -36,17 +37,12 @@ public class ResponseAspect {
             @annotation(org.springframework.web.bind.annotation.ResponseBody)
             """)
     public Object responseAspect(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("pre"); // 전처리
-
         Object rst = joinPoint.proceed(); // 실제 수행 메서드
 
         if(rst instanceof RsData rsData) {
             int statusCode = rsData.getStatusCode();
             response.setStatus(statusCode);
-
         }
-
-        System.out.println("post"); // 후처리
 
         return rst;
     }
