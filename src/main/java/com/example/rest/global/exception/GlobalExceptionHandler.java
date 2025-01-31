@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<RsData<Void>> handle(NoSuchElementException e) {
 
         // 개발 모드에서만 작동되도록.
-        if(AppConfig.isNotProd()) e.printStackTrace();
+        if (AppConfig.isNotProd()) e.printStackTrace();
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
 
         String message = e.getBindingResult().getFieldErrors()
                 .stream()
-                .map(fe -> fe.getField() + " : " + fe.getCode() + " : "  + fe.getDefaultMessage())
+                .map(fe -> fe.getField() + " : " + fe.getCode() + " : " + fe.getDefaultMessage())
                 .sorted()
                 .collect(Collectors.joining("\n"));
 
@@ -51,18 +51,18 @@ public class GlobalExceptionHandler {
                 );
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<RsData<Void>> DataIntegrityViolationExceptionHandle(DataIntegrityViolationException e) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<RsData<Void>> IllegalArgumentExceptionHandle(IllegalArgumentException ex) {
 
         // 개발 모드에서만 작동되도록.
-        if(AppConfig.isNotProd()) e.printStackTrace();
+        if (AppConfig.isNotProd()) ex.printStackTrace();
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.CONFLICT)
                 .body(
                         new RsData<>(
                                 "409-1",
-                                "이미 존재하는 데이터입니다."
+                                ex.getMessage()
                         )
                 );
     }
