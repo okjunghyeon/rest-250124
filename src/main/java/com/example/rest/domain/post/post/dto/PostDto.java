@@ -1,6 +1,9 @@
 package com.example.rest.domain.post.post.dto;
 
+import com.example.rest.domain.member.member.dto.MemberDto;
+import com.example.rest.domain.member.member.entity.Member;
 import com.example.rest.domain.post.post.entity.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 

@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
                 .body(
                         new RsData<>(
                                 ex.getCode(),
-                                ex.getMessage()
+                                ex.getMsg()
                         )
                 );
     }

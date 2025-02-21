@@ -10,12 +10,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -91,9 +89,9 @@ public class ApiV1PostController {
         Post post = postService.write(actor, body.title(), body.content());
 
         return new RsData<>(
-                "200-1",
-                "글 작성이 완료되었습니다.",
-                new PostDto(post)
-        );
+                        "200-1",
+                        "글 작성이 완료되었습니다.",
+                        new PostDto(post)
+                );
     }
 }

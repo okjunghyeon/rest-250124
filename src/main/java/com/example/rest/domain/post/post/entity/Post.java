@@ -17,7 +17,6 @@ public class Post extends BaseTime {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member author;
-
     private String title;
     private String content;
 

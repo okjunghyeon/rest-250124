@@ -18,9 +18,9 @@ public class RsData<T> {
     }
 
     @JsonIgnore
-    public int getStatusCode(){
-        String statusCodStr = code.split("-")[0];
-        return Integer.parseInt(statusCodStr);
+    public int getStatusCode() {
+        String statusCodeStr = code.split("-")[0];
+        return Integer.parseInt(statusCodeStr);
     }
 
 }
